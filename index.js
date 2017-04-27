@@ -31,6 +31,10 @@ server.post('/api/messages', connector.listen());
 
 
 
+/*
+var num1;
+var num2;
+
 bot.dialog('/', [
     function(session) {
         session.beginDialog('/askName');
@@ -70,6 +74,29 @@ bot.dialog('/setnum1', [
 bot.dialog('/setnum2', [
     function(session) {
         builder.Prompts.text(session, 'ใส่เลขต่อไปมาเล้ยย !!');
+    },
+    function(session, results) {
+        session.endDialogWithResult(results);
+    }
+]);
+*/
+
+
+
+bot.dialog('/', [
+    function(session) {
+		session.send(" Welcome to CalBot* ");
+        session.beginDialog('/greeting');
+    },
+    function(session, results) {
+        session.send('Hello %s!', results.response);
+    }
+
+]);
+
+bot.dialog('/greeting', [
+    function(session) {
+		builder.Prompts.text(session, 'Hi! What is your name?');
     },
     function(session, results) {
         session.endDialogWithResult(results);
