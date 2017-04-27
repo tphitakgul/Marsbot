@@ -24,7 +24,54 @@ server.post('/api/messages', connector.listen());
 // Bots Dialogs 
 // =========================================================
 // This is called the root dialog. It is the first point of entry for any message the bot receives
-bot.dialog('/', function (session) {
-// Send 'hello world' to the user
-session.send("Hello World");
-});
+// bot.dialog('/', function (session) {
+// // Send 'hello world' to the user
+// session.send("Hello World");
+// });
+
+
+
+bot.dialog('/', [
+    function(session) {
+        session.beginDialog('/askName');
+    },
+    function(session, results) {
+        session.send('Hello %s!', results.response);
+        session.beginDialog('/setnum1');
+    },
+    function(session, results) {
+        num1 = results.response;
+        session.beginDialog('/setnum2');
+    },
+    function(session, results) {
+        num2 = results.response;
+        var total = Number(num1) + Number(num2);
+        session.send('ผมรวมได้ = %d  ', total);
+    }
+
+]);
+
+bot.dialog('/askName', [
+    function(session) {
+        builder.Prompts.text(session, 'Hi! What is your name?');
+    },
+    function(session, results) {
+        session.endDialogWithResult(results);
+    }
+]);
+bot.dialog('/setnum1', [
+    function(session) {
+        builder.Prompts.text(session, 'Ok มาบวกเลขกัน !!\nใส่ตัวเลขแรกมาเลยจ้า');
+    },
+    function(session, results) {
+        session.endDialogWithResult(results);
+    }
+]);
+bot.dialog('/setnum2', [
+    function(session) {
+        builder.Prompts.text(session, 'ใส่เลขต่อไปมาเล้ยย !!');
+    },
+    function(session, results) {
+        session.endDialogWithResult(results);
+    }
+]);
